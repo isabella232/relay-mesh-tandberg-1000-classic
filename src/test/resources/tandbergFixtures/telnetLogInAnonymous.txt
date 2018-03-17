@@ -1,0 +1,4 @@
+Welcome to John-Chambers
+TANDBERG Codec Release E2.3 NTSC
+SW Release Date: 2003-10-20
+
