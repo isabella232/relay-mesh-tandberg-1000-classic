@@ -8,8 +8,8 @@
     <packaging>jar</packaging>
     <version>1.0.0-SNAPSHOT</version>
     <name>Tandberg 1000 Classic for Relay Mesh</name>
-    <description>Server that allows Blue Jeans Relay to control Tandberg 1000 Classic endpoints using the Relay Mesh
-        control protocol.
+    <description>Server that allows Blue Jeans Relay to control Tandberg 1000 Classic endpoints using the Relay Mesh control
+        protocol.
     </description>
 
     <inceptionYear>2015</inceptionYear>
@@ -18,6 +18,18 @@
         <url>https://www.bluejeans.com</url>
     </organization>
     <url>http://www.bluejeans.com/features/relay</url>
+
+    <scm>
+        <url>https://git.corp.bluejeans.com:8443/projects/CAT/repos/tandberg-1000-classic-mesh/</url>
+        <connection>scm:git:https://git.corp.bluejeans.com:8443/scm/cat/tandberg-1000-classic-mesh.git</connection>
+        <developerConnection>scm:git:ssh://git@git.corp.bluejeans.com:7999/cat/tandberg-1000-classic-mesh.git</developerConnection>
+    </scm>
+
+    <issueManagement>
+        <system>jira</system>
+        <url>http://jira.corp.bluejeans.com/projects/CAT</url>
+    </issueManagement>
+
     <developers>
         <developer>
             <name>Ben Hutchison</name>
@@ -62,10 +74,6 @@
             <groupId>org.glassfish.jersey.media</groupId>
             <artifactId>jersey-media-json-jackson</artifactId>
         </dependency>
-        <!--<dependency>
-            <groupId>org.glassfish.jersey.inject</groupId>
-            <artifactId>jersey-hk2</artifactId>
-        </dependency>-->
         <dependency>
             <groupId>commons-net</groupId>
             <artifactId>commons-net</artifactId>
@@ -107,10 +115,12 @@
             <groupId>org.hamcrest</groupId>
             <artifactId>hamcrest-core</artifactId>
             <version>1.3</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
     <build>
+        <finalName>${project.artifactId}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -122,6 +132,7 @@
                     <target>1.7</target>
                 </configuration>
             </plugin>
+
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
@@ -136,6 +147,26 @@
                 <configuration>
                     <mainClass>vc.bjn.catalyst.tandberg1000classicmesh.Main</mainClass>
                 </configuration>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.1.0</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <transformers>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <mainClass>vc.bjn.catalyst.tandberg1000classicmesh.Main</mainClass>
+                                </transformer>
+                            </transformers>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

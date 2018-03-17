@@ -42,6 +42,7 @@ public class MainBinder extends AbstractBinder {
 
             config.register(ObjectMapperProvider.class);
             config.register(JacksonJaxbJsonProvider.class);
+            config.register(JerseyToSLF4JLogger.getLoggingFeature("http-client"));
 
             return ClientBuilder.newClient(config);
         }

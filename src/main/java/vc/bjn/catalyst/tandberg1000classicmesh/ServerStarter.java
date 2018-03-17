@@ -31,6 +31,7 @@ public abstract class ServerStarter {
                 .packages(Main.class.getPackage().getName())
                 .register(ObjectMapperProvider.class) //TODO maybe autodetect with @Provider?
                 .register(JacksonFeature.class)
+                .register(JerseyToSLF4JLogger.getLoggingFeature("http-server"))
                 .register(binder);
 
         final HttpServer server = GrizzlyHttpServerFactory.createHttpServer(baseUri, rc);
