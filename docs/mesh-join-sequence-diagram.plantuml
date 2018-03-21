@@ -1,0 +1,47 @@
+@startuml "mesh-join-sequence-diagram"
+
+skinparam NoteBackgroundColor #DDE4EE
+skinparam NoteBorderColor white
+skinparam NoteBorderThickness 0
+skinparam NoteFontColor #204E74
+skinparam shadowing false
+skinparam sequence {
+    ActorBackgroundColor #204E74
+    ActorBorderColor #204E74
+    ActorFontColor #204E74
+    ArrowColor #204E74
+    ArrowFontColor #204E74
+    ArrowThickness 2
+    LifeLineBackgroundColor #3AC97A
+    LifeLineBorderColor #DDE4EE
+    LifeLineBorderThickness 2
+    ParticipantBorderColor White
+    ParticipantFontColor white
+    SequenceActorBorderThickness 10
+}
+
+actor User as user
+participant "**Relay API client**\n//Relay Touch, Admin UI, or custom//" as client #12A8F1
+participant "**Relay server**\n//Cloud API server//" as relay #12A8F1
+participant "**Listener Service**\n//On-prem program//" as ls #12A8F1
+participant "**Mesh server**\n//Your server//" as mesh #3AC97A
+participant "**Tandberg 1000 Classic**\n//Video endpoint//" as ep #1B576A
+participant "**VCS**\n//H.323 gateway//" as vcs #1B576A
+participant "**Blue Jeans**\n//SIP connector//" as bjn #12A8F1
+
+user -> client: Join meeting with\nmeeting ID, passcode
+client -> relay: endpoints.join\n//HTTP request//
+relay -> ls: Invitation\n//AMQP command//
+ls -> mesh: join\n//HTTP request//
+mesh -> ep: place_call\n//HTTP request//
+ep -> vcs: setup\n//H.323 call//
+activate ep
+vcs -> bjn: invite\n//SIP call//
+
+mesh <-- ep
+ls <-- mesh
+relay <-- ls
+client <-- relay
+user <-- client
+
+@enduml
