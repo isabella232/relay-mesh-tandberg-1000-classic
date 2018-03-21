@@ -10,7 +10,7 @@ This repository serves as a reference implementation of the Mesh server interfac
 
 - [What is Relay Mesh?](#what-is-relay-mesh)
     - [Why does Mesh exist?](#why-does-mesh-exist)
-    - [Requirements](#requirements)
+- [Requirements](#requirements)
 - [Usage](#usage)
     - [Installation](#installation)
     - [Configuration](#configuration)
@@ -47,7 +47,7 @@ Now you want to do the same thing with a different kind of endpoint, one that Re
 To solve this, Relay allows you to provision an endpoint using a very generic, stable Control Protocol called Mesh. It's not vendor-specific, and it's very easy to implement. All you have to do is expose an HTTP server like this one that conforms to the Mesh interface, and then make it control your specific endpoint using whatever admin interface the endpoint offers.
 
 <a name="requirements"></a>
-### Requirements
+## Requirements
 - [Blue Jeans Relay](http://bluejeans.com/features/relay#relay) account and Listener Service
     - [Requirements](https://swdl.bluejeans.com/relay/docs/Requirements.pdf)
     - [Getting Started guide](https://swdl.bluejeans.com/relay/docs/Getting%20Started.pdf)
