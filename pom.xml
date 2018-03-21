@@ -4,10 +4,10 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>vc.bjn.catalyst</groupId>
-    <artifactId>tandberg-1000-classic-mesh</artifactId>
+    <artifactId>relay-mesh-tandberg-1000-classic</artifactId>
     <packaging>jar</packaging>
     <version>1.0.0-SNAPSHOT</version>
-    <name>Tandberg 1000 Classic for Relay Mesh</name>
+    <name>Blue Jeans Relay Mesh server for Tandberg 1000 Classic</name>
     <description>Server that allows Blue Jeans Relay to control Tandberg 1000 Classic endpoints using the Relay Mesh control
         protocol.
     </description>
@@ -20,14 +20,14 @@
     <url>http://www.bluejeans.com/features/relay</url>
 
     <scm>
-        <url>https://git.corp.bluejeans.com:8443/projects/CAT/repos/tandberg-1000-classic-mesh/</url>
-        <connection>scm:git:https://git.corp.bluejeans.com:8443/scm/cat/tandberg-1000-classic-mesh.git</connection>
-        <developerConnection>scm:git:ssh://git@git.corp.bluejeans.com:7999/cat/tandberg-1000-classic-mesh.git</developerConnection>
+        <url>https://github.com/bluejeans/relay-mesh-tandberg-1000-classic</url>
+        <connection>scm:git:https://github.com/bluejeans/relay-mesh-tandberg-1000-classic.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com:bluejeans/relay-mesh-tandberg-1000-classic.git</developerConnection>
     </scm>
 
     <issueManagement>
-        <system>jira</system>
-        <url>http://jira.corp.bluejeans.com/projects/CAT</url>
+        <system>github</system>
+        <url>https://github.com/bluejeans/relay-mesh-tandberg-1000-classic/issues</url>
     </issueManagement>
 
     <developers>
@@ -42,6 +42,14 @@
             <timezone>America/Los_Angeles</timezone>
         </developer>
     </developers>
+
+    <licenses>
+        <license>
+            <name>The Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -145,7 +153,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <mainClass>vc.bjn.catalyst.tandberg1000classicmesh.Main</mainClass>
+                    <mainClass>vc.bjn.catalyst.mesh.tandberg1000classic.Main</mainClass>
                 </configuration>
             </plugin>
 
@@ -161,7 +169,7 @@
                         <configuration>
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>vc.bjn.catalyst.tandberg1000classicmesh.Main</mainClass>
+                                    <mainClass>vc.bjn.catalyst.mesh.tandberg1000classic.Main</mainClass>
                                 </transformer>
                             </transformers>
                         </configuration>

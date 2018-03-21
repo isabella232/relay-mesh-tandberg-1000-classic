@@ -2,8 +2,8 @@ package vc.bjn.catalyst.test.jersey.client;
 
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
-import vc.bjn.catalyst.tandberg1000classicmesh.connection.EndpointTargetFactory;
-import vc.bjn.catalyst.tandberg1000classicmesh.connection.TestEndpointTargetFactory;
+import vc.bjn.catalyst.mesh.tandberg1000classic.connection.EndpointTargetFactory;
+import vc.bjn.catalyst.mesh.tandberg1000classic.connection.TestEndpointTargetFactory;
 
 import javax.inject.Provider;
 import javax.ws.rs.client.Client;
@@ -13,8 +13,7 @@ import java.net.URI;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 /**
  * All-in-one mocking of Jersey 2 client requests for classes under test which inject a Provider{@code <Client>}.

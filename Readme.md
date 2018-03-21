@@ -165,9 +165,9 @@ One task that isn't exposed in the endpoint's web interface is muting and unmuti
 <a name="codebase-starting-points"></a>
 ### Codebase starting points
 
-The Mesh server interface is implemented in `src/main/java/vc/bjn/catalyst/tandberg1000classicmesh/api/EndpointControlResource.java`. This is the Listener Service's entry point into your server.
+The Mesh server interface is implemented in `src/main/java/vc/bjn/catalyst/mesh/tandberg1000classic/api/EndpointControlResource.java`. This is the Listener Service's entry point into your server.
 
-The endpoint client is implemented in `src/main/java/vc/bjn/catalyst/tandberg1000classicmesh/dispatcher/Tandberg1000ClassicDispatcher.java`. This is what your server uses to control your endpoint.
+The endpoint client is implemented in `src/main/java/vc/bjn/catalyst/mesh/tandberg1000classic/dispatcher/Tandberg1000ClassicDispatcher.java`. This is what your server uses to control your endpoint.
 
 <a name="libraries"></a>
 ### Libraries
