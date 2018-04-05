@@ -47,7 +47,7 @@ public class TestServer implements ISuiteListener, ITestListener {
     public void onStart(final ISuite suite) {
         while (testServer == null) {
             try {
-                final int port = RANDOM.nextInt(65536 - 1024) + 1024 + 1;
+                final int port = RANDOM.nextInt(65536 - 1024) + 1024;
                 baseUri = new URI("http", null, "0.0.0.0", port, null, null, null);
                 testServer = ServerStarter.startServer(baseUri, BINDER);
             } catch (URISyntaxException | ProcessingException e) {
