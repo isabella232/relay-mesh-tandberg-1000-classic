@@ -1,6 +1,6 @@
 ![Blue Jeans Relay Mesh and Tandberg 1000 Classic](docs/header.svg)
 
-This server allows you to control a [Tandberg 1000 Classic](https://www.cnet.com/products/tandberg-1000-video-conferencing-kit-series/specs/) video conferencing endpoint using [**Blue Jeans Relay**](https://www.bluejeans.com/features/relay). Relay does not have build-in support for the Tandberg 1000 Classic because this endpoint is old and outdated, but thanks to the extensible [**Relay Mesh**](https://relay.bluejeans.com/docs/mesh.html) Control Protocol, anyone can easily extend Relay to support other endpoints like this one.
+This server allows you to control a [Tandberg 1000 Classic](https://www.cnet.com/products/tandberg-1000-video-conferencing-kit-series/specs/) video conferencing endpoint using [**Blue Jeans Relay**](https://www.bluejeans.com/features/relay). Relay does not have built-in support for the Tandberg 1000 Classic because this endpoint is old and outdated, but thanks to the extensible [**Relay Mesh**](https://relay.bluejeans.com/docs/mesh.html) Control Protocol, anyone can easily extend Relay to support other endpoints like this one.
 
 This repository serves as a reference implementation of the Mesh server interface. It successfully controls a real endpoint from Relay. You may use this repo as a starting point for developing a Mesh server for your own endpoints. This particular server is written in Java, but you can use any language that can run an HTTP server.
 
@@ -9,7 +9,7 @@ This repository serves as a reference implementation of the Mesh server interfac
 <!-- MarkdownTOC autolink="true" bracket="round" autoanchor="true" depth="4" -->
 
 - [What is Relay Mesh?](#what-is-relay-mesh)
-    - [Why does Mesh exist?](#why-does-mesh-exist)
+    - [When should I use Mesh?](#when-should-i-use-mesh)
 - [Requirements](#requirements)
 - [Usage](#usage)
     - [Installation](#installation)
@@ -31,20 +31,20 @@ This repository serves as a reference implementation of the Mesh server interfac
 <a name="what-is-relay-mesh"></a>
 ## What is Relay Mesh?
 
-**Relay** is a video conferencing endpoint control system created by [Blue Jeans](https://www.bluejeans.com/). It lets you synchronize your calendars to endpoints, join scheduled Blue Jeans meetings with one touch, and control the endpoints from a tablet or any [API](https://relay.bluejeans.com/docs/) client. It supports a [bunch of different endpoints already](https://swdl.bluejeans.com/relay/docs/Requirements.pdf).
+**Relay** is a video conferencing endpoint control system created by [Blue Jeans](https://www.bluejeans.com/). It lets you synchronize your calendars to endpoints, join scheduled Blue Jeans meetings with one touch, and control the endpoints from a tablet or any [API](https://relay.bluejeans.com/docs/) client. It integrates with a [bunch of different endpoints](https://swdl.bluejeans.com/relay/docs/Requirements.pdf) already.
 
-**Relay Mesh** is an HTTP interface that allows Relay to integrate with otherwise unsupported endpoints. If you create an HTTP server that implements this interface and controls your endpoints, then Relay will be able to control your endpoints.
+**Relay Mesh** is an HTTP interface that allows Relay to integrate with otherwise unsupported endpoints. If you create and run an HTTP server that implements this interface and controls your endpoints, then Relay will be able to control your endpoints.
 
-See the [**Relay API docs**](https://relay.bluejeans.com/docs/mesh.html) for more details and API specifications for Mesh.
+See the [**Relay API docs**](https://relay.bluejeans.com/docs/mesh.html) for precise API specifications and more details about Mesh.
 
-<a name="why-does-mesh-exist"></a>
-### Why does Mesh exist?
+<a name="when-should-i-use-mesh"></a>
+### When should I use Mesh?
 
-Imagine you're already using Relay to attend your scheduled and ad-hoc meetings on your Cisco, Lifesize, Polycom, StarLeaf, Tely, or Sony video conferencing endpoints using their built-in calendar interface, the Relay Touch Android or iOS apps, or a custom API client integration. LIfe is good, and joining meetings is easy.
+Imagine you're already using Relay to attend your scheduled and ad-hoc meetings on your Cisco, Lifesize, Polycom, StarLeaf, Tely, or Sony video conferencing endpoints using their built-in calendar interface, the Relay Touch Android or iOS apps, or a custom API client integration. Life is good, and joining meetings is easy.
 
-Now you want to do the same thing with a different kind of endpoint, one that Relay doesn't natively support. You could, in theory, write a web server that controlled your endpoint, make it imitate the admin interface of a Polycom endpoint (for example), and then provision it in Relay using a Polycom Control Protocol. Unfortunately, that's not a perfect solution, because it's a decent amount of work for you to figure out how to spoof a Polycom API, and the way a Listener Service controls a Polycom endpoint might change, leaving your fake endpoint broken.
+Now you want to do the same thing with a different kind of endpoint, one that Relay doesn't natively support. You could, in theory, write a web server that controlled your endpoint, make it imitate the admin interface of a supported endpoint (Polycom, for example), and then provision it in Relay using a Polycom Control Protocol. Unfortunately, that's not a perfect solution, because it's a large amount of work for you to spoof a Polycom API, and the way a Listener Service controls a Polycom endpoint might change, leaving your fake endpoint broken.
 
-To solve this, Relay allows you to provision an endpoint using a very generic, stable Control Protocol called Mesh. It's not vendor-specific, and it's very easy to implement. All you have to do is expose an HTTP server like this one that conforms to the Mesh interface, and then make it control your specific endpoint using whatever admin interface the endpoint offers.
+To solve this, Relay allows you to provision an endpoint using a very generic, stable Control Protocol called Mesh. It's not vendor-specific, and it's very easy to implement. All you have to do is create an HTTP server like this one that exposes a few specific REST API methods. Then you make those API methods control your endpoint using whatever remote control interface it offers, whether it's HTTP, SOAP, Websockets, AMF, SSH, Telnet, raw TCP sockets, RS-232 serial, or infrared remote.
 
 <a name="requirements"></a>
 ## Requirements
@@ -86,12 +86,13 @@ Now you should be able to make the endpoint start dialing by clicking the **Join
 <a name="h323-gateway-configuration-optional"></a>
 #### H.323 gateway configuration (optional)
 
-**Warning: these steps are silly.** If all you care about is seeing how Mesh works, and you don't actually need to make a Tandberg 1000 Classic successfully dial into a Blue Jeans meeting with a passcode behind a NAT, then you don't actually have to set up an H.323 gateway. **Setting up a gateway for your ancient endpoint is only good for personal satisfaction and bragging rights.**
 
----
+|⚠ Warning: these steps are silly ⚠|
+|---|
+|If all you care about is seeing how Mesh works, and you don't actually need to make a Tandberg 1000 Classic successfully dial into a Blue Jeans meeting with a passcode behind a NAT, then you don't actually have to set up an H.323 gateway. **Setting up a gateway for your ancient endpoint is only good for personal satisfaction and bragging rights.**|
 
 On its own, the Tandberg 1000 Classic has a few limitations.
-* No NAT traversal, so it can't make outbound calls to the WAN if it's behind a NAT
+* No NAT traversal, so it can't make outbound calls to the WAN if it's behind a NAT.
 * Dial strings cannot contain `.` in the local part of a URI, so it can't send a meeting passcode to Blue Jeans.
 
 To be fair, it reached end-of-life in 2004, so it's not exactly new.
@@ -116,6 +117,10 @@ If you want to, you can solve these problems by putting the endpoint in a DMZ an
     ```
     ^(\d{5,})@(?:sip\.)?bjn\.vc
     ```
+    replacing the match with
+    ```
+    \1@bjn.vc
+    ```
     to handle passcodeless meetings.
 1. Register the endpoint to the VCS. You can do this from the on-screen menu or from the endpoint's web interface: under System Configuration &rsaquo; Networks &rsaquo; H.323 Settings, specify the manual gatekeeper IP of your VCS.
 1. In the Relay administrative site, create a new [Dial Style](https://relay.bluejeans.com/#dialstyles) with a **Format with Passcode** of
@@ -126,8 +131,8 @@ If you want to, you can solve these problems by putting the endpoint in a DMZ an
     ```
     {meetingid}@{host}
     ```
-1. Set the Tandberg 1000 Classic Endpoint in Relay to use this **Dial Style**
-1. Set the Endpoint in Relay to use Hostname as the **Address Style**
+1. Set the Tandberg 1000 Classic Endpoint in Relay to use this **Dial Style**.
+1. Set the Endpoint in Relay to use Hostname as the **Address Style**.
 
 After all that shenanigans, you can dial again, and Relay will use an asterisk in the dial string to separate the meeting ID and passcode, instead of a period like standard Annex-O, which allows the endpoint to not barf on the dial string. When the VCS receives the call, it will restore the Annex-O dial string, convert the call signaling from H.323 to SIP, send it to Blue Jeans, and receive inbound traffic even if there is a NAT.
 
@@ -136,6 +141,8 @@ After all that shenanigans, you can dial again, and Relay will use an asterisk i
 
 <a name="request-path"></a>
 ### Request path
+
+This is the sequence of events that occur when a user commands a Tandberg 1000 Classic to dial into a Blue Jeans meeting using Relay and a Mesh server.
 
 ![Sequence diagram of a Relay Mesh join command](docs/mesh-join-sequence-diagram.svg)
 
@@ -172,9 +179,9 @@ The endpoint client is implemented in `src/main/java/vc/bjn/catalyst/mesh/tandbe
 <a name="libraries"></a>
 ### Libraries
 
-The Mesh server uses the [Jersey framework](https://jersey.github.io/) running on a [Grizzly](https://javaee.github.io/grizzly/) HTTP server. Dependencies are injected using [HK2](https://javaee.github.io/hk2/).
+The Mesh server uses the [Jersey REST server framework](https://jersey.github.io/) running on a [Grizzly](https://javaee.github.io/grizzly/) HTTP server. Dependencies are injected using [HK2](https://javaee.github.io/hk2/).
 
-The endpoint client uses a [Jersey client](https://jersey.github.io/documentation/latest/client.html) with the built-in [HttpURLConnection](https://docs.oracle.com/javase/7/docs/api/java/net/HttpURLConnection.html) connector. The client also uses the [Apache Commons Net](http://commons.apache.org/proper/commons-net/) [TelnetClient](http://commons.apache.org/proper/commons-net/apidocs/org/apache/commons/net/telnet/TelnetClient.html) for toggling the endpoint's microphone mute state, which is unavailable from the web interface.
+The endpoint client uses a [Jersey REST client](https://jersey.github.io/documentation/latest/client.html) with the built-in [HttpURLConnection](https://docs.oracle.com/javase/7/docs/api/java/net/HttpURLConnection.html) connector. The client also uses the [Apache Commons Net](http://commons.apache.org/proper/commons-net/) [TelnetClient](http://commons.apache.org/proper/commons-net/apidocs/org/apache/commons/net/telnet/TelnetClient.html) for toggling the endpoint's microphone mute state, which is unavailable from the web interface.
 
 Logging is handled by [SLF4J](https://www.slf4j.org/)/[Logback](https://logback.qos.ch/). JSON is handled by [Jackson](https://github.com/FasterXML/jackson).
 
